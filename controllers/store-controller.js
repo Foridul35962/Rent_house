@@ -62,3 +62,13 @@ exports.postFavourite = (req, res, next)=>{
     res.redirect('/homes')
   })
 }
+
+exports.postFavouriteHomeDelete = (req, res, next)=>{
+  const id = req.params.homeId  
+  Favourite.deleteToFavourite(id,err=>{
+    if (err) {
+      console.log('home not deleted:',err);
+    }
+    res.redirect('/favourites')
+  })
+}

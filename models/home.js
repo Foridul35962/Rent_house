@@ -1,5 +1,6 @@
 const fs = require('fs')
-const path = require('path')
+const path = require('path');
+const Favourite = require('./favourite');
 const homeDataPath = path.join(__dirname,'../', "data", "homes.json");
 
 module.exports = class Home{
@@ -34,8 +35,18 @@ module.exports = class Home{
 
   static findHome(homeId,callback){
     this.fetchAll((homes)=>{
-      const homeFound = homes.find((home)=>home.id===homeId)
+      const homeFound = homes.find((home) => String(home.id) === String(homeId))
       callback(homeFound)
+    })
+  }
+  
+  static deleteHome(homeId,callback){
+    this.fetchAll((homes)=>{
+      homes = homes.filter(home=>home.id!==homeId)
+      fs.writeFile(homeDataPath, JSON.stringify(homes), callback)
+      Favourite.deleteToFavourite(homeId,err=>{
+        console.log('favourite is not deleted',err);
+      })
     })
   }
 }

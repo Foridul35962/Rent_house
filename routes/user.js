@@ -8,5 +8,6 @@ user.get('/bookings',storeController.getBookings)
 user.get('/favourites',storeController.getFavouriteList)
 user.post('/favourites',storeController.postFavourite)
 user.get('/homes/:homeId',storeController.getHomeDetails)
+user.post('/favourites/:homeId',storeController.postFavouriteHomeDelete)
 
 module.exports = user

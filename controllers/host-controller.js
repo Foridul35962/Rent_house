@@ -42,3 +42,14 @@ exports.postAddHome = (req, res, next) => {
     pageTitle: "Home Added Successfully"
   });
 };
+
+exports.postDeleteHome = (req, res, next)=>{
+  const homeId = req.params.id
+  console.log(homeId);
+  Home.deleteHome(homeId,err=>{
+    if (err) {
+      console.log('home not deleted:',err);
+    }
+    res.redirect('/host/home-list')
+  })
+}

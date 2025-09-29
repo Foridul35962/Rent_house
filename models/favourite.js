@@ -19,4 +19,11 @@ module.exports = class Favourite{
             }
         })
     }
+
+    static deleteToFavourite(id, callback){
+        this.getFavourite((favourite)=>{
+            favourite = favourite.filter((item) => String(item) !== String(id))
+            fs.writeFile(favouriteDataPath, JSON.stringify(favourite), callback)
+        })
+    }
 }
