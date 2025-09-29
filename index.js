@@ -5,6 +5,7 @@ const path = require('path')
 const user = require('./routes/user')
 const host = require('./routes/host')
 const errorController = require('./controllers/error-controller')
+const db = require('./utils/database')
 
 const app = express()
 
@@ -16,7 +17,7 @@ app.use(express.urlencoded({extended:false}))
 app.use(express.json())
 
 //setting ejs for html
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs')   
 
 
 //routes pages
