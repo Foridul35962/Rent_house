@@ -44,8 +44,14 @@ module.exports = class Home{
     this.fetchAll((homes)=>{
       homes = homes.filter(home=>home.id!==homeId)
       fs.writeFile(homeDataPath, JSON.stringify(homes), callback)
-      Favourite.deleteToFavourite(homeId,err=>{
-        console.log('favourite is not deleted',err);
+      Favourite.getFavourite(favourite=>{
+        if (favourite.includes(homeId)) {
+          Favourite.deleteToFavourite(homeId,err=>{
+            if (err) {
+              console.log('favourite is not deleted',err);
+            }
+          })
+        }
       })
     })
   }
