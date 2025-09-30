@@ -5,7 +5,7 @@ exports.getAddHome = (req, res, next) => {
 }
 
 exports.getHostHome = (req, res, next) => {
-  Home.fetchAll((registerHome) => {
+  Home.fetchAll().then(([registerHome]) => {
     res.render('host/host-home-list', { pageTitle: "Edit Home", registerHome: registerHome })
   })
 }
@@ -13,20 +13,22 @@ exports.getHostHome = (req, res, next) => {
 exports.getEditHome = (req, res, next) => {
   const homeId = req.params.id
   const editing = req.query.editing === 'true'
-  Home.findHome(homeId, homes => {
+  Home.findHome(homeId).then(([homes]) => {
     if (!homes) {
       return res.redirect('/host/home-list')
     }
     res.render('host/add-edit-home', {
-      pageTitle: "Edit Home",
-      homes,
+      pageTitle: 'Edit Home',
+      homes:homes[0],
       editing
     })
+  }).catch(err => {
+    console.error('DB error in getEditHome:', err);
+    next(err);
   })
 }
 
 exports.postEditHome = (req, res, next) => {
-  console.log('post Edit');
   const { id, houseName, price, location, rating, photoUrl, description } = req.body;
   const home = new Home(houseName, price, location, rating, photoUrl, description, id);
   home.save();
@@ -47,10 +49,9 @@ exports.postAddHome = (req, res, next) => {
 
 exports.postDeleteHome = (req, res, next) => {
   const homeId = req.params.id
-  Home.deleteHome(homeId, err => {
-    if (err) {
-      console.log('home not deleted:', err);
-    }
+  Home.deleteHome(homeId).then(()=>{
     res.redirect('/host/home-list')
+  }).catch(err => {
+      console.log('home not deleted:', err);
   })
 }

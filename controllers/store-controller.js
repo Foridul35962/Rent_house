@@ -23,14 +23,14 @@ exports.getHomes = (req, res, next) => {
 
 exports.getHomeDetails = (req, res, next) => {
   const homeId = req.params.homeId
-  Home.findHome(homeId, home => {
+  Home.findHome(homeId).then(([home])=>{
     if (!home) {
       res.redirect('/homes')
     }
     else {
       res.render("store/home-details", {
         pageTitle: "Homes Details",
-        home
+        home:home[0]
       })
     }
   })

@@ -12,17 +12,32 @@ module.exports = class Home {
   }
 
   save() {
-    return db.execute(
-      'INSERT INTO homes (houseName, price, location, rating, photoUrl, description) VALUES (?, ?, ?, ?, ?, ?)',
-      [
-        this.houseName ?? null,
-        this.price ?? null,
-        this.location ?? null,
-        this.rating ?? null,
-        this.photoUrl ?? null,
-        this.description ?? null,
-      ]
-    );
+    if (this.id) {
+      return db.execute('UPDATE homes SET houseName=?, price=?, location=?, rating=?, photoUrl=?, description=? WHERE id=?',
+        [
+          this.houseName ?? null,
+          this.price ?? null,
+          this.location ?? null,
+          this.rating ?? null,
+          this.photoUrl ?? null,
+          this.description ?? null,
+          this.id
+        ]
+      )
+    }
+    else {
+      return db.execute(
+        'INSERT INTO homes (houseName, price, location, rating, photoUrl, description) VALUES (?, ?, ?, ?, ?, ?)',
+        [
+          this.houseName ?? null,
+          this.price ?? null,
+          this.location ?? null,
+          this.rating ?? null,
+          this.photoUrl ?? null,
+          this.description ?? null,
+        ]
+      );
+    }
   }
 
 
@@ -32,8 +47,10 @@ module.exports = class Home {
   }
 
   static findHome(homeId) {
+    return db.execute('SELECT * FROM homes WHERE id=?', [homeId])
   }
 
   static deleteHome(homeId) {
+    return db.execute('DELETE FROM homes WHERE id=?', [homeId])
   }
 }
