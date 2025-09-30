@@ -13,13 +13,13 @@ exports.getHostHome = (req, res, next) => {
 exports.getEditHome = (req, res, next) => {
   const homeId = req.params.id
   const editing = req.query.editing === 'true'
-  Home.findHome(homeId).then(([homes]) => {
+  Home.findHome(homeId).then((homes) => {
     if (!homes) {
       return res.redirect('/host/home-list')
     }
     res.render('host/add-edit-home', {
       pageTitle: 'Edit Home',
-      homes:homes[0],
+      homes,
       editing
     })
   }).catch(err => {
@@ -29,10 +29,16 @@ exports.getEditHome = (req, res, next) => {
 }
 
 exports.postEditHome = (req, res, next) => {
-  const { id, houseName, price, location, rating, photoUrl, description } = req.body;
-  const home = new Home(houseName, price, location, rating, photoUrl, description, id);
-  home.save();
-  res.redirect("/host/home-list");
+  const { _id, houseName, price, location, rating, photoUrl, description } = req.body;
+  const home = new Home(houseName, price, location, rating, photoUrl, description, _id);
+  home.save()
+    .then(()=>{
+      res.redirect('/host/home-list')
+    })
+    .catch(err=>{
+      console.error('DB error on edit save:', err);
+      next(err);
+    })
 }
 
 

@@ -23,14 +23,14 @@ exports.getHomes = (req, res, next) => {
 
 exports.getHomeDetails = (req, res, next) => {
   const homeId = req.params.homeId
-  Home.findHome(homeId).then(([home])=>{
+  Home.findHome(homeId).then((home)=>{
     if (!home) {
       res.redirect('/homes')
     }
     else {
       res.render("store/home-details", {
         pageTitle: "Homes Details",
-        home:home[0]
+        home
       })
     }
   })
@@ -46,7 +46,7 @@ exports.getFavouriteList = (req, res, next) => {
   Favourite.getFavourite((favourite) => {
     Home.fetchAll()
       .then((registeredHomes) => {
-        const favouriteHome = registeredHomes.filter((home) => favourite.includes(home.id))
+        const favouriteHome = registeredHomes.filter((home) => favourite.includes(home._id))
         res.render("store/favourite-list", {
           favouriteHome: favouriteHome,
           pageTitle: "My Favourites"

@@ -31,9 +31,9 @@
                                 </p>
                             </div>
                             <div class="flex flex-col text-center gap-2">
-                                <a href="/homes/<%= home.id %>" class="bg-blue-500 p-2 text-white rounded-lg cursor-pointer">Details</a>
+                                <a href="/homes/<%= home._id %>" class="bg-blue-500 p-2 text-white rounded-lg cursor-pointer">Details</a>
                             </div>
-                            <form action="/favourites/<%=home.id%>" method="post">
+                            <form action="/favourites/<%=home._id%>" method="post">
                                 <button type="submit" class="bg-red-500 p-2 text-white rounded-lg cursor-pointer">Delete</button>
                             </form>
                         </div>
