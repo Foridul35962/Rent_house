@@ -1,12 +1,12 @@
 const Home = require('../models/home')
 
 exports.getAddHome = (req,res,next)=>{
-    res.render('host/add-home',{pageTitle: "Add Home to airbnb"})
+    res.render('host/add-home',{pageTitle: "Add Home"})
 }
 
 exports.getHostHome = (req,res,next)=>{
     Home.fetchAll((registerHome)=>{
-        res.render('host/host-home-list',{pageTitle: "Add Home to airbnb"})
+        res.render('host/host-home-list',{pageTitle: "Edit Home", registerHome:registerHome})
     })
 }
 
