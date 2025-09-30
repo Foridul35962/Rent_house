@@ -1,4 +1,4 @@
-const db = require('../utils/database')
+const { getDb } = require("../utils/database");
 
 module.exports = class Home {
   constructor(houseName, price, location, rating, photoUrl, description, id) {
@@ -12,45 +12,20 @@ module.exports = class Home {
   }
 
   save() {
-    if (this.id) {
-      return db.execute('UPDATE homes SET houseName=?, price=?, location=?, rating=?, photoUrl=?, description=? WHERE id=?',
-        [
-          this.houseName ?? null,
-          this.price ?? null,
-          this.location ?? null,
-          this.rating ?? null,
-          this.photoUrl ?? null,
-          this.description ?? null,
-          this.id
-        ]
-      )
-    }
-    else {
-      return db.execute(
-        'INSERT INTO homes (houseName, price, location, rating, photoUrl, description) VALUES (?, ?, ?, ?, ?, ?)',
-        [
-          this.houseName ?? null,
-          this.price ?? null,
-          this.location ?? null,
-          this.rating ?? null,
-          this.photoUrl ?? null,
-          this.description ?? null,
-        ]
-      );
-    }
+    const db = getDb()
+    return db.collection('homes').insertOne(this)
   }
 
-
-
   static fetchAll() {
-    return db.execute('SELECT * FROM homes')
+    const db= getDb()
+    return db.collection('homes').find().toArray()
   }
 
   static findHome(homeId) {
-    return db.execute('SELECT * FROM homes WHERE id=?', [homeId])
+    
   }
 
   static deleteHome(homeId) {
-    return db.execute('DELETE FROM homes WHERE id=?', [homeId])
+    
   }
 }

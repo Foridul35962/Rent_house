@@ -3,7 +3,7 @@ const Favourite = require('../models/favourite')
 
 exports.getIndex = (req, res, next) => {
   Home.fetchAll()
-    .then(([registeredHomes, field]) => {
+    .then((registeredHomes) => {
       res.render("store/index", {
         registeredHomes: registeredHomes,
         pageTitle: "Home"
@@ -13,7 +13,7 @@ exports.getIndex = (req, res, next) => {
 
 exports.getHomes = (req, res, next) => {
   Home.fetchAll()
-    .then(([registeredHomes, field]) => {
+    .then((registeredHomes) => {
       res.render("store/home-list", {
         registeredHomes: registeredHomes,
         pageTitle: "Homes List"
@@ -45,7 +45,7 @@ exports.getBookings = (req, res, next) => {
 exports.getFavouriteList = (req, res, next) => {
   Favourite.getFavourite((favourite) => {
     Home.fetchAll()
-      .then(([registeredHomes, field]) => {
+      .then((registeredHomes) => {
         const favouriteHome = registeredHomes.filter((home) => favourite.includes(home.id))
         res.render("store/favourite-list", {
           favouriteHome: favouriteHome,

@@ -5,7 +5,7 @@ exports.getAddHome = (req, res, next) => {
 }
 
 exports.getHostHome = (req, res, next) => {
-  Home.fetchAll().then(([registerHome]) => {
+  Home.fetchAll().then((registerHome) => {
     res.render('host/host-home-list', { pageTitle: "Edit Home", registerHome: registerHome })
   })
 }

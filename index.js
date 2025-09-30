@@ -5,7 +5,7 @@ const path = require('path')
 const user = require('./routes/user')
 const host = require('./routes/host')
 const errorController = require('./controllers/error-controller')
-const db = require('./utils/database')
+const {mongoConnect} = require('./utils/database')
 
 const app = express()
 
@@ -13,19 +13,23 @@ const app = express()
 app.use(express.static(path.join('./public')))
 
 //for getting value from user
-app.use(express.urlencoded({extended:false}))
+app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
 //setting ejs for html
-app.set('view engine', 'ejs')   
+app.set('view engine', 'ejs')
 
 
 //routes pages
 app.use(user)
-app.use("/host",host)
+app.use("/host", host)
 app.use(errorController.pageNotFound)
 
 const PORT = 3000
-app.listen(PORT,()=>{
-    console.log(`server is running on http://localhost:${PORT}`);
+
+mongoConnect(()=>{
+    console.log('mongodb is connected');
+    app.listen(PORT, () => {
+        console.log(`server is running on http://localhost:${PORT}`);
+    })
 })

@@ -1,10 +1,25 @@
-const db = require('mysql2')
+const mongo = require('mongodb')
 
-const pool = db.createPool({
-    host:'localhost',
-    user:'root',
-    password:'',
-    database:'rent_house'
-})
+const mongoClient = mongo.MongoClient
+const mongoUrl = "mongodb+srv://foridulislam35962_database:foridulislam35962_database@cluster35962.maduxse.mongodb.net/?retryWrites=true&w=majority&appName=Cluster35962"
 
-module.exports = pool.promise()
+
+let _db
+
+const mongoConnect = (callback)=>{
+    mongoClient.connect(mongoUrl).then(client=>{
+        _db=client.db('rent_house')
+        callback()
+    }).catch(err=>{
+        console.log('mongodb is connected error: ',err);
+    })
+}
+
+const getDb=()=>{
+    if (!_db) {
+        throw new Error('database is not connected')
+    }
+    return _db
+}
+
+module.exports = {mongoConnect, getDb}
