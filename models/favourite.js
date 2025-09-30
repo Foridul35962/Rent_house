@@ -1,29 +1,24 @@
-const fs = require('fs')
-const path = require('path')
-const favouriteDataPath = path.join(__dirname,'../', "data", "favouriteList.json");
+const { ObjectId } = require("mongodb")
+const { getDb } = require("../utils/database")
 
 module.exports = class Favourite{
-    static getFavourite(callback){
-        fs.readFile(favouriteDataPath,(err,data)=>{
-            callback(!err? JSON.parse(data) : [])
-        })
+    static getFavourite(){
+        const db = getDb()
+        return db.collection('favourite').find().toArray()
     }
 
-    static addToFavourite(id, callback){
-        this.getFavourite((favourite)=>{
-            if (favourite.includes(id)) {
-                callback('It already has');
-            }else{
-                favourite.push(id)
-                fs.writeFile(favouriteDataPath,JSON.stringify(favourite),callback)
-            }
-        })
+    static addToFavourite(home){
+        const db = getDb()
+        return db.collection('favourite').insertOne(home)
     }
 
-    static deleteToFavourite(id, callback){
-        this.getFavourite((favourite)=>{
-            favourite = favourite.filter((item) => String(item) !== String(id))
-            fs.writeFile(favouriteDataPath, JSON.stringify(favourite), callback)
-        })
+    static deleteToFavourite(id){
+        const db = getDb()
+        return db.collection('favourite').deleteOne({_id: new ObjectId(String(id))})
+    }
+
+    static findOnFavourite(id){
+        const db= getDb()
+        return db.collection('favourite').find({_id: new ObjectId(String(id))}).next()
     }
 }
