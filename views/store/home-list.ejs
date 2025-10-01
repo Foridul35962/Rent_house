@@ -30,7 +30,10 @@
                                     </span>
                                 </p>
                             </div>
-                            <a href="/homes/<%= home.id %>" class="bg-blue-500 p-2 rounded-lg cursor-pointer">Details</a>
+                            <div class="flex flex-col text-center gap-2">
+                                <a href="/homes/<%= home.id %>" class="bg-blue-500 p-2 text-white rounded-lg cursor-pointer">Details</a>
+                                <%-include('../partials/favourite',{home:home})%>
+                            </div>
                         </div>
                         <% }) %>
                 </div>

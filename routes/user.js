@@ -6,6 +6,7 @@ user.get('/',storeController.getIndex)
 user.get('/homes',storeController.getHomes)
 user.get('/bookings',storeController.getBookings)
 user.get('/favourites',storeController.getFavouriteList)
+user.post('/favourites',storeController.postFavourite)
 user.get('/homes/:homeId',storeController.getHomeDetails)
 
 module.exports = user
