@@ -3,38 +3,44 @@
     <%-include('../partials/nav') %>
     <div class="flex flex-col items-center justify-center py-8">
         <h1 class="text-4xl text-amber-800 font-extrabold mb-8 drop-shadow-lg">
-            Add Homes
+            <%=editing?'Edit':'Add'%> Homes
         </h1>
-        <form action="/add-home" method="post"
+        <form action="/host/<%=editing?'home-edit':'add-home'%>" method="post"
             class="flex flex-col w-full max-w-lg gap-8 bg-white p-10 rounded-2xl shadow-2xl border-2 border-amber-300">
+            <input type="hidden" name="id" value="<%=editing?homes.id:''%>">
             <div class="flex flex-col gap-2">
                 <label for="name" class="text-lg font-bold text-amber-800">Home Name:</label>
-                <input type="text" id="name" name="houseName" placeholder="Enter home name"
+                <input type="text" id="name" name="houseName" placeholder="Enter home name" required
+                    value="<%=editing?homes.houseName:''%>"
                     class="border-2 border-amber-400 rounded-xl px-5 py-3 focus:outline-none focus:border-amber-700 transition text-gray-900 bg-amber-50 shadow-sm">
             </div>
             <div class="flex flex-col gap-2">
                 <label for="price" class="text-lg font-bold text-amber-800">Price:</label>
-                <input type="number" id="price" name="price" placeholder="Enter the price"
+                <input type="number" id="price" name="price" placeholder="Enter the price" required
+                    value="<%=editing?homes.price:''%>"
                     class="border-2 border-amber-400 rounded-xl px-5 py-3 focus:outline-none focus:border-amber-700 transition text-gray-900 bg-amber-50 shadow-sm">
             </div>
             <div class="flex flex-col gap-2">
                 <label for="location" class="text-lg font-bold text-amber-800">Location:</label>
-                <input type="text" id="location" name="location" placeholder="Enter the home location"
+                <input type="text" id="location" name="location" placeholder="Enter the home location" required
+                    value="<%=editing?homes.location:''%>"
                     class="border-2 border-amber-400 rounded-xl px-5 py-3 focus:outline-none focus:border-amber-700 transition text-gray-900 bg-amber-50 shadow-sm">
             </div>
             <div class="flex flex-col gap-2">
                 <label for="rating" class="text-lg font-bold text-amber-800">Rating:</label>
                 <input type="text" id="rating" name="rating" placeholder="Enter the home rating"
+                    value="<%=editing?homes.rating:''%>"
                     class="border-2 border-amber-400 rounded-xl px-5 py-3 focus:outline-none focus:border-amber-700 transition text-gray-900 bg-amber-50 shadow-sm">
             </div>
             <div class="flex flex-col gap-2">
                 <label for="photo" class="text-lg font-bold text-amber-800">Photo:</label>
-                <input type="text" id="photo" name="photoUrl" placeholder="Enter photo url"
+                <input type="text" id="photo" name="photoUrl" placeholder="Enter photo url" required
+                    value="<%=editing?homes.photoUrl:''%>"
                     class="border-2 border-amber-400 rounded-xl px-5 py-3 focus:outline-none focus:border-amber-700 transition text-gray-900 bg-amber-50 shadow-sm">
             </div>
             <button type="submit"
                 class="bg-amber-600 hover:bg-amber-800 text-white font-extrabold py-4 rounded-xl shadow-lg transition duration-200 ease-in-out">
-                Submit
+                <%=editing?'Update':'Submit'%>
             </button>
         </form>
     </div>

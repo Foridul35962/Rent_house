@@ -21,7 +21,7 @@ app.set('view engine', 'ejs')
 
 //routes pages
 app.use(user)
-app.use(host)
+app.use("/host",host)
 app.use(errorController.pageNotFound)
 
 const PORT = 3000
