@@ -1,4 +1,5 @@
 const Home = require('../models/home')
+const Favourite = require('../models/favourite')
 
 exports.getAddHome = (req, res, next) => {
   res.render('host/add-edit-home', { pageTitle: "Add Home", editing: false })
@@ -56,8 +57,11 @@ exports.postAddHome = (req, res, next) => {
 exports.postDeleteHome = (req, res, next) => {
   const homeId = req.params.id
   Home.deleteHome(homeId).then(()=>{
-    res.redirect('/host/home-list')
+    Favourite.deleteToFavourite(homeId).catch((err)=>{
+      console.log('favourite not delete',err);
+    })
   }).catch(err => {
-      console.log('home not deleted:', err);
+    console.log('home not deleted:', err);
   })
+  res.redirect('/host/home-list')
 }

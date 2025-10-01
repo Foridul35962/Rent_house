@@ -4,6 +4,7 @@ const path = require('path')
 //local module
 const user = require('./routes/user')
 const host = require('./routes/host')
+const auth = require('./routes/auth')
 const errorController = require('./controllers/error-controller')
 const {mongoConnect} = require('./utils/database')
 
@@ -21,6 +22,7 @@ app.set('view engine', 'ejs')
 
 
 //routes pages
+app.use(auth)
 app.use(user)
 app.use("/host", host)
 app.use(errorController.pageNotFound)
