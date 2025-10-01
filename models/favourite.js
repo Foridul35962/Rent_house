@@ -7,18 +7,18 @@ module.exports = class Favourite{
         return db.collection('favourite').find().toArray()
     }
 
-    static addToFavourite(home){
+    static addToFavourite(houseId){
         const db = getDb()
-        return db.collection('favourite').insertOne(home)
+        return db.collection('favourite').insertOne({houseId: new ObjectId(houseId)})
     }
 
     static deleteToFavourite(id){
         const db = getDb()
-        return db.collection('favourite').deleteOne({_id: new ObjectId(String(id))})
+        return db.collection('favourite').deleteOne({houseId: new ObjectId(String(id))})
     }
 
     static findOnFavourite(id){
         const db= getDb()
-        return db.collection('favourite').find({_id: new ObjectId(String(id))}).next()
+        return db.collection('favourite').find({houseId: new ObjectId(String(id))}).next()
     }
 }

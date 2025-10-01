@@ -36,7 +36,7 @@ module.exports = class Home {
     return db.collection('homes').find().toArray()
   }
 
-  static findHome(homeId) {
+  static findHome(homeId) {    
     const db = getDb()
     return db.collection('homes').find({_id: new ObjectId(String(homeId))}).next()
   }
