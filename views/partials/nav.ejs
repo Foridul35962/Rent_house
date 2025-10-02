@@ -4,15 +4,25 @@
         <a href="/" class="px-4 py-2 rounded focus:outline-none">RentHouse</a>
     </div>
     <div class="flex gap-6">
-        <a href="/homes" class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none">Home List</a>
-        <a href="/bookings" class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none">Bookings</a>
-        <a href="/favourites" class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none">Favourites</a>
-        <a href="/host/home-list" class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none">Host
-            Home</a>
-        <a href="/host/add-home"
-            class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none bg-amber-500 text-white hover:bg-amber-600">Add
-            Home</a>
-        <a href="/login"
+        <% if(isLoggedIn){ %>
+            <a href="/homes" class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none">Home List</a>
+            <a href="/bookings" class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none">Bookings</a>
+            <a href="/favourites" class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none">Favourites</a>
+            <a href="/host/home-list" class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none">Host
+                Home</a>
+            <a href="/host/add-home"
+                class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none bg-amber-500 text-white hover:bg-amber-600">Add
+                Home</a>
+        <% } %>
+        <% if(!isLoggedIn){%>
+            <a href="/login"
             class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none bg-blue-500 text-white hover:bg-blue-600">Login</a>
+        <% } else{ %>
+            <form action="/logout" method="post">
+                <button class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none bg-blue-500 text-white hover:bg-blue-600">Log Out</button>
+            </form>
+        <% } %>
+        
+        
     </div>
 </nav>

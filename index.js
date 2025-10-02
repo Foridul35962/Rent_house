@@ -20,10 +20,23 @@ app.use(express.json())
 //setting ejs for html
 app.set('view engine', 'ejs')
 
+//get cookies
+app.use((req, res, next)=>{
+    req.isLoggedIn = req.get('Cookie') ? req.get('Cookie').split('=')[1]=== 'true' : false;
+    next()
+})
 
 //routes pages
 app.use(auth)
 app.use(user)
+app.use('/host',(req, res, next)=>{
+    if (req.isLoggedIn) {
+        next()
+    }
+    else{
+        res.redirect('/')
+    }
+})
 app.use("/host", host)
 app.use(errorController.pageNotFound)
 

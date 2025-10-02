@@ -2,12 +2,12 @@ const Home = require('../models/home')
 const Favourite = require('../models/favourite')
 
 exports.getAddHome = (req, res, next) => {
-  res.render('host/add-edit-home', { pageTitle: "Add Home", editing: false })
+  res.render('host/add-edit-home', { pageTitle: "Add Home", editing: false, isLoggedIn: req.isLoggedIn })
 }
 
 exports.getHostHome = (req, res, next) => {
   Home.fetchAll().then((registerHome) => {
-    res.render('host/host-home-list', { pageTitle: "Edit Home", registerHome: registerHome })
+    res.render('host/host-home-list', { pageTitle: "Edit Home", registerHome: registerHome, isLoggedIn: req.isLoggedIn })
   })
 }
 
@@ -21,7 +21,8 @@ exports.getEditHome = (req, res, next) => {
     res.render('host/add-edit-home', {
       pageTitle: 'Edit Home',
       homes,
-      editing
+      editing,
+      isLoggedIn: req.isLoggedIn
     })
   }).catch(err => {
     console.error('DB error in getEditHome:', err);
@@ -50,7 +51,8 @@ exports.postAddHome = (req, res, next) => {
   home.save();
 
   res.render("host/submit-home", {
-    pageTitle: "Home Added Successfully"
+    pageTitle: "Home Added Successfully",
+    isLoggedIn: req.isLoggedIn
   });
 };
 
