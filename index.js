@@ -1,5 +1,9 @@
 const express = require('express')
 const path = require('path')
+//for login require
+const session = require('express-session')
+const mongoStore = require('connect-mongodb-session')(session)
+const mongoUrl = "mongodb+srv://foridulislam35962_database:foridulislam35962_database@cluster35962.maduxse.mongodb.net/rent_house?retryWrites=true&w=majority&appName=Cluster35962";
 
 //local module
 const user = require('./routes/user')
@@ -20,11 +24,19 @@ app.use(express.json())
 //setting ejs for html
 app.set('view engine', 'ejs')
 
-//get cookies
-app.use((req, res, next)=>{
-    req.isLoggedIn = req.get('Cookie') ? req.get('Cookie').split('=')[1]=== 'true' : false;
-    next()
+//connect to session on mongodb
+const store = new mongoStore({
+    uri: mongoUrl,
+    collection: 'session'
 })
+
+//setting session
+app.use(session({
+    secret: 'Forid login auth',
+    resave:false,
+    saveUninitialized: true,
+    store
+}))
 
 //routes pages
 app.use(auth)
@@ -38,7 +50,7 @@ app.use('/host',(req, res, next)=>{
     }
 })
 app.use("/host", host)
-app.use(errorController.pageNotFound)
+app.use('/error',(errorController.pageNotFound))
 
 const PORT = 3000
 

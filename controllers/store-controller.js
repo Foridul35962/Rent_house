@@ -7,7 +7,7 @@ exports.getIndex = (req, res, next) => {
       res.render("store/index", {
         registeredHomes: registeredHomes,
         pageTitle: "Home",
-        isLoggedIn: req.isLoggedIn
+        isLoggedIn: req.session.isLoggedIn
       })
     })
 };
@@ -18,7 +18,7 @@ exports.getHomes = (req, res, next) => {
       res.render("store/home-list", {
         registeredHomes: registeredHomes,
         pageTitle: "Homes List",
-        isLoggedIn: req.isLoggedIn
+        isLoggedIn: req.session.isLoggedIn
       })
     })
 };
@@ -33,7 +33,7 @@ exports.getHomeDetails = (req, res, next) => {
       res.render("store/home-details", {
         pageTitle: "Homes Details",
         home,
-        isLoggedIn: req.isLoggedIn
+        isLoggedIn: req.session.isLoggedIn
       })
     }
   })
@@ -42,7 +42,7 @@ exports.getHomeDetails = (req, res, next) => {
 exports.getBookings = (req, res, next) => {
   res.render("store/bookings", {
     pageTitle: "My Bookings",
-    isLoggedIn: req.isLoggedIn
+    isLoggedIn: req.session.isLoggedIn
   })
 };
 
@@ -56,7 +56,7 @@ exports.getFavouriteList = (req, res, next) => {
       res.render("store/favourite-list", {
         favouriteHome: favouriteHome,
         pageTitle: "My Favourites",
-        isLoggedIn: req.isLoggedIn
+        isLoggedIn: req.session.isLoggedIn
       })
     })
   })
