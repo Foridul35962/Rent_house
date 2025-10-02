@@ -11,12 +11,13 @@
     "start": "npx nodemon index.js"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "connect-mongodb-session": "^5.0.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "express-session": "^1.18.2",
+    "express-validator": "^7.2.1",
     "mongodb": "^6.20.0",
-    "mysql2": "^3.15.1",
     "nodemon": "^3.1.10"
   }
 }

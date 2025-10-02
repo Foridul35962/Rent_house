@@ -10,7 +10,7 @@ const user = require('./routes/user')
 const host = require('./routes/host')
 const auth = require('./routes/auth')
 const errorController = require('./controllers/error-controller')
-const {mongoConnect} = require('./utils/database')
+const {mongoConnect} = require('./utils/database');
 
 const app = express()
 
@@ -42,7 +42,7 @@ app.use(session({
 app.use(auth)
 app.use(user)
 app.use('/host',(req, res, next)=>{
-    if (req.isLoggedIn) {
+    if (req.session.isLoggedIn) {
         next()
     }
     else{

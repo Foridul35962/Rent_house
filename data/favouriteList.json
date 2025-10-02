@@ -1,1 +1,16 @@
-["1"]
+[{
+  "_id": {
+    "$oid": "68dcafbed8e33e52353afc7b"
+  },
+  "houseId": {
+    "$oid": "68dcaf8eab270dd012becbe7"
+  }
+},
+{
+  "_id": {
+    "$oid": "68dcafc3d8e33e52353afc7c"
+  },
+  "houseId": {
+    "$oid": "68dcaf8eab270dd012becbea"
+  }
+}]

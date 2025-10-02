@@ -1,0 +1,105 @@
+<%-include('../partials/head') %>
+
+    <body>
+        <%-include('../partials/nav') %>
+            <div class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+                <div class="w-full max-w-sm bg-white rounded-2xl shadow-lg p-8">
+                    <h2 class="text-2xl font-bold text-center text-gray-700 mb-6">Register</h2>
+
+                    <form action="/register" method="post" class="space-y-5">
+                        <% if (errorMessages && errorMessages.length> 0) { %>
+                            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+                                role="alert">
+                                <strong class="font-bold">Errors:</strong>
+                                <ul class="list-disc list-inside mt-2">
+                                    <% for (let err of errorMessages) { %>
+                                        <li>
+                                            <%= err %>
+                                        </li>
+                                    <% } %>
+                                </ul>
+                            </div>
+                        <% } %>
+
+                        <!-- Name -->
+                        <div>
+                            <label for="firstName" class="block text-sm font-medium text-gray-600">First
+                                Name</label>
+                            <input type="text" name="firstName" id="firstName" placeholder="Ex: Foridul"
+                                value="<%=oldInput.firstName ? oldInput.firstName : '' %>" required
+                                class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                        </div>
+                        <div>
+                            <label for="lastName" class="block text-sm font-medium text-gray-600">Last
+                                Name</label>
+                            <input type="text" name="lastName" id="lastName" placeholder="Ex: Islam"
+                                value="<%=oldInput.lastName ? oldInput.lastName : '' %>" required
+                                class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
+                            <input type="email" name="email" id="email" placeholder="Ex: Foridul@gmail.com"
+                                value="<%=oldInput.email ? oldInput.email : '' %>" required
+                                class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                        </div>
+
+                        <!-- Password -->
+                        <div>
+                            <label for="password"
+                                class="block text-sm font-medium text-gray-600">Password</label>
+                            <input type="password" name="password" id="password" placeholder="password" required
+                                class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div>
+                            <label for="confirm_password"
+                                class="block text-sm font-medium text-gray-600">Confirm
+                                Password</label>
+                            <input type="password" name="confirm_password" id="confirm-password"
+                                placeholder="comfirm password" required
+                                class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                        </div>
+
+                        <!-- User Role -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-2">Register As</label>
+                            <div class="flex items-center space-x-6">
+                                <!-- Normal User -->
+                                <label class="flex items-center space-x-2">
+                                    <input type="radio" name="userType" value="guest"
+                                        <%= oldInput.userType=== 'guest'? 'checked' : '' %> required
+                                        class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500" />
+                                    <span class="text-gray-700">Guest</span>
+                                </label>
+
+                                <!-- Admin -->
+                                <label class="flex items-center space-x-2">
+                                    <input type="radio" name="userType" value="host"
+                                        <%= oldInput.userType=== 'host'? 'checked' : '' %> required
+                                        class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500" />
+                                    <span class="text-gray-700">Host</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit"
+                            class="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                            Register
+                        </button>
+                    </form>
+
+                    <!-- Extra Links -->
+                    <p class="text-sm text-gray-500 text-center mt-6">
+                        Already have an account?
+                        <a href="/login" class="text-blue-600 hover:underline">Login</a>
+                    </p>
+                </div>
+            </div>
+    </body>
+
+    </html>
