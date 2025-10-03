@@ -1,5 +1,5 @@
 const Home = require("../models/home");
-const Favourite = require('../models/favourite')
+const User = require("../models/userCollection");
 
 exports.getIndex = (req, res, next) => {
   Home.fetchAll()
@@ -7,7 +7,8 @@ exports.getIndex = (req, res, next) => {
       res.render("store/index", {
         registeredHomes: registeredHomes,
         pageTitle: "Home",
-        isLoggedIn: req.session.isLoggedIn
+        isLoggedIn: req.session.isLoggedIn,
+        user: req.session.user
       })
     })
 };
@@ -18,7 +19,8 @@ exports.getHomes = (req, res, next) => {
       res.render("store/home-list", {
         registeredHomes: registeredHomes,
         pageTitle: "Homes List",
-        isLoggedIn: req.session.isLoggedIn
+        isLoggedIn: req.session.isLoggedIn,
+        user: req.session.user
       })
     })
 };
@@ -33,7 +35,8 @@ exports.getHomeDetails = (req, res, next) => {
       res.render("store/home-details", {
         pageTitle: "Homes Details",
         home,
-        isLoggedIn: req.session.isLoggedIn
+        isLoggedIn: req.session.isLoggedIn,
+        user: req.session.user
       })
     }
   })
@@ -42,36 +45,46 @@ exports.getHomeDetails = (req, res, next) => {
 exports.getBookings = (req, res, next) => {
   res.render("store/bookings", {
     pageTitle: "My Bookings",
-    isLoggedIn: req.session.isLoggedIn
+    isLoggedIn: req.session.isLoggedIn,
+    user: req.session.user
   })
 };
 
 exports.getFavouriteList = (req, res, next) => {
-  Favourite.getFavourite().then(favouriteHomeList => {
-    favouriteHomeList = favouriteHomeList.map(fav => fav.houseId.toString())
-    Home.fetchAll().then((registeredHome) => {
-      const favouriteHome = registeredHome.filter((home) => {
-        return favouriteHomeList.includes(home._id.toString())
-      })
-      res.render("store/favourite-list", {
-        favouriteHome: favouriteHome,
-        pageTitle: "My Favourites",
-        isLoggedIn: req.session.isLoggedIn
-      })
+  User.getFavourite(req.session.user.email)
+    .then((favouriteHomeList) => {
+      // jodi favouriteHomeList null hoy -> empty array
+      if (!favouriteHomeList) {
+        favouriteHomeList = [];
+      }
+
+      // safe mapping (null check)
+      favouriteHomeList = favouriteHomeList
+        .filter(fav => fav) // null/undefined remove kore
+        .map(fav => fav.toString());
+
+      Home.fetchAll()
+        .then((registeredHome) => {
+          const favouriteHome = registeredHome.filter((home) =>
+            favouriteHomeList.includes(home._id.toString())
+          );
+
+          res.render("store/favourite-list", {
+            favouriteHome: favouriteHome,
+            pageTitle: "My Favourites",
+            isLoggedIn: req.session.isLoggedIn,
+            user: req.session.user
+          });
+        })
+        .catch(err => console.log(err));
     })
-  })
-}
+    .catch(err => console.log(err));
+};
 
 exports.postFavourite = (req, res, next) => {
   const id = String(req.body._id)
-  Favourite.findOnFavourite(id).then((favouriteHome) => {
-    if (favouriteHome) {
-      console.log('favourite already added');
-    } else {
-      Favourite.addToFavourite(id)
-    }
-  }).catch((err) => {
-    console.log('favourite add failed', err);
+  User.addFavourite(req.session.user.email, id).catch((err) => {
+    console.log('favourite add failed :', err);
   }).finally(() => {
     res.redirect('/homes')
   })
@@ -79,9 +92,9 @@ exports.postFavourite = (req, res, next) => {
 
 exports.postFavouriteHomeDelete = (req, res, next) => {
   const _id = req.params.homeId
-  Favourite.deleteToFavourite(_id).then(() => {
-    res.redirect('/favourites')
-  }).catch((err) => {
+  User.deleteToFavourite(req.session.user.email, _id).catch((err)=>{
     console.log('home not deleted:', err);
+  }).finally(()=>{
+    res.redirect('/favourites')
   })
 }

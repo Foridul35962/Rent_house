@@ -5,7 +5,12 @@ const bcrypt = require('bcryptjs')
 
 //Get Lonin
 exports.getLogin = (req, res, next) => {
-  res.render('auth/loginPage', { pageTitle: "Login", isLoggedIn: req.session.isLoggedIn, errorMessages: [] })
+  res.render('auth/loginPage', {
+    pageTitle: "Login",
+    isLoggedIn: req.session.isLoggedIn,
+    errorMessages: [],
+    user: req.session.user
+  })
 }
 
 //post Login
@@ -17,7 +22,8 @@ exports.postLogin = async (req, res, next) => {
       return res.render('auth/loginPage', {
         pageTitle: 'Login',
         isLoggedIn: req.session.isLoggedIn,
-        errorMessages: ['Invalid user name password']
+        errorMessages: ['Invalid user name password'],
+        user: req.session.user
       })
     }
     const isMatch = await bcrypt.compare(password, user.password)
@@ -25,7 +31,8 @@ exports.postLogin = async (req, res, next) => {
       return res.render('auth/loginPage', {
         pageTitle: 'Login',
         isLoggedIn: req.session.isLoggedIn,
-        errorMessages: ['Invalid user name password']
+        errorMessages: ['Invalid user name password'],
+        user: req.session.user
       })
     }
     req.session.isLoggedIn = true
@@ -37,7 +44,8 @@ exports.postLogin = async (req, res, next) => {
     return res.render('auth/loginPage', {
       pageTitle: 'Login',
       isLoggedIn: req.session.isLoggedIn,
-      errorMessages: ['Something went wrong, please try again']
+      errorMessages: ['Something went wrong, please try again'],
+        user: req.session.user
     })
   }
 }

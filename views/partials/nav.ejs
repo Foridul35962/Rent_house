@@ -5,14 +5,17 @@
     </div>
     <div class="flex gap-6">
         <% if(isLoggedIn){ %>
-            <a href="/homes" class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none">Home List</a>
-            <a href="/bookings" class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none">Bookings</a>
-            <a href="/favourites" class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none">Favourites</a>
-            <a href="/host/home-list" class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none">Host
-                Home</a>
-            <a href="/host/add-home"
-                class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none bg-amber-500 text-white hover:bg-amber-600">Add
-                Home</a>
+            <% if(user.userType === 'guest'){ %>
+                <a href="/homes" class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none">Home List</a>
+                <a href="/bookings" class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none">Bookings</a>
+                <a href="/favourites" class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none">Favourites</a>
+            <% } else{ %>
+                <a href="/host/home-list" class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none">Host
+                    Home</a>
+                <a href="/host/add-home"
+                    class="px-4 py-2 rounded hover:bg-amber-100 transition focus:outline-none bg-amber-500 text-white hover:bg-amber-600">Add
+                    Home</a>
+            <% } %>
         <% } %>
         <% if(!isLoggedIn){%>
             <a href="/login"
