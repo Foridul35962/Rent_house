@@ -13,4 +13,9 @@ module.exports = class User {
     const db = getDb()
     return db.collection('users').insertOne(this)
   }
+
+  static findUser = (email)=>{
+    const db = getDb()
+    return db.collection('users').find({email}).next()
+  }
 }
