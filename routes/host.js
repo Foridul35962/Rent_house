@@ -8,7 +8,7 @@ host.get('/add-home',hostController.getAddHome)
 host.post('/add-home', upload.single('photoUrl'), hostController.postAddHome)
 host.get('/home-list',hostController.getHostHome)
 host.get('/home-edit/:id',hostController.getEditHome)
-host.post('/home-edit',hostController.postEditHome)
+host.post('/home-edit', upload.single('photoUrl'), hostController.postEditHome)
 host.post('/delete-home/:id',hostController.postDeleteHome)
 
 module.exports = host

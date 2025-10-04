@@ -1,5 +1,7 @@
 const Home = require('../models/home')
 const User = require('../models/userCollection')
+const fs = require('fs')
+const path = require('path')
 
 exports.getAddHome = (req, res, next) => {
   res.render('host/add-edit-home', {
@@ -41,7 +43,17 @@ exports.getEditHome = (req, res, next) => {
 }
 
 exports.postEditHome = (req, res, next) => {
-  const { _id, houseName, price, location, rating, photoUrl, description } = req.body;
+  const { _id, houseName, price, location, rating, UpdatePhotoUrl, description } = req.body;
+  let photoUrl = UpdatePhotoUrl
+  if (req.file) {
+    const deleteFileUrl = path.join(__dirname, '../', 'public', photoUrl.replace(/^\//, ''));
+    fs.unlink(deleteFileUrl, err=>{
+      if (err) {
+        console.log('Error while delete file',err);
+      }
+    })
+    photoUrl = `/upload/${req.file.filename}`
+  }
   const home = new Home(houseName, price, location, rating, photoUrl, description, _id);
   home.save()
     .then(()=>{
@@ -71,9 +83,19 @@ exports.postAddHome = (req, res, next) => {
   });
 };
 
-exports.postDeleteHome = (req, res, next) => {
+exports.postDeleteHome = async (req, res, next) => {
   const homeId = req.params.id
-  Home.deleteHome(homeId).then(()=>{
+  await Home.findHome(homeId).then((home)=>{
+    if (home.photoUrl) {
+      const deleteFileUrl = path.join(__dirname, '../', 'public', home.photoUrl.replace(/^\//, ''));
+      fs.unlink(deleteFileUrl, err=>{
+        if (err) {
+          console.log('Error while delete file',err);
+        }
+      })
+    }
+  })
+  await Home.deleteHome(homeId).then(()=>{
     User.deleteToFavouriteAllUser(homeId).catch((err)=>{
       console.log('favourite not delete',err);
     })
