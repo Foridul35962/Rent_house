@@ -51,7 +51,7 @@ exports.getBookings = (req, res, next) => {
 };
 
 exports.getFavouriteList = (req, res, next) => {
-  User.getFavourite(req.session.user.email)
+  User.getFavourite(req.session.user._id)
     .then((favouriteHomeList) => {
       // jodi favouriteHomeList null hoy -> empty array
       if (!favouriteHomeList) {
@@ -83,7 +83,7 @@ exports.getFavouriteList = (req, res, next) => {
 
 exports.postFavourite = (req, res, next) => {
   const id = String(req.body._id)
-  User.addFavourite(req.session.user.email, id).catch((err) => {
+  User.addFavourite(req.session.user._id, id).catch((err) => {
     console.log('favourite add failed :', err);
   }).finally(() => {
     res.redirect('/homes')
@@ -92,7 +92,7 @@ exports.postFavourite = (req, res, next) => {
 
 exports.postFavouriteHomeDelete = (req, res, next) => {
   const _id = req.params.homeId
-  User.deleteToFavourite(req.session.user.email, _id).catch((err)=>{
+  User.deleteToFavourite(req.session.user._id, _id).catch((err)=>{
     console.log('home not deleted:', err);
   }).finally(()=>{
     res.redirect('/favourites')

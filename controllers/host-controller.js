@@ -1,5 +1,5 @@
 const Home = require('../models/home')
-const Favourite = require('../models/favourite')
+const User = require('../models/userCollection')
 
 exports.getAddHome = (req, res, next) => {
   res.render('host/add-edit-home', {
@@ -54,9 +54,13 @@ exports.postEditHome = (req, res, next) => {
 }
 
 
-exports.postAddHome = (req, res, next) => {
-  const { houseName, price, location, rating, photoUrl, description, id } = req.body;
-
+exports.postAddHome = (req, res, next) => {  
+  if (!req.file) {
+    console.log('No image provided');
+    res.status(400).redirect('host/add-home')
+  }
+  const { houseName, price, location, rating, description, id } = req.body;
+  const photoUrl = `/upload/${req.file.filename}`
   const home = new Home(houseName, price, location, rating, photoUrl, description, id);
   home.save();
 
@@ -70,7 +74,7 @@ exports.postAddHome = (req, res, next) => {
 exports.postDeleteHome = (req, res, next) => {
   const homeId = req.params.id
   Home.deleteHome(homeId).then(()=>{
-    Favourite.deleteToFavourite(homeId).catch((err)=>{
+    User.deleteToFavouriteAllUser(homeId).catch((err)=>{
       console.log('favourite not delete',err);
     })
   }).catch(err => {

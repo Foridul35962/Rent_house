@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const { getDb } = require("../utils/database");
 
 module.exports = class User {
@@ -21,10 +22,10 @@ module.exports = class User {
     return db.collection('users').find({ email }).next()
   }
 
-  static addFavourite = async (email, favouriteId) => {
+  static addFavourite = async (id, favouriteId) => {
     const db = getDb();
     // 1. Find user
-    const user = await db.collection("users").findOne({ email });
+    const user = await db.collection("users").findOne({ _id: new ObjectId(id) });
     if (!user) {
       throw new Error("User not found");
     }
@@ -35,25 +36,34 @@ module.exports = class User {
     }
 
     return db.collection("users").updateOne(
-      { email },  // filter (ekhane email diye user find hobe)
+      { _id: new ObjectId(id) },  // filter (ekhane email diye user find hobe)
       { $push: { favourite: favouriteId } } // update (favourite array te push hobe)
     );
   }
 
-  static async getFavourite(email) {
+  static async getFavourite(id) {
     const db = getDb();
     const user = await db.collection("users").findOne(
-      { email },
+      { _id: new ObjectId(id) },
       { projection: { favourite: 1, _id: 0 } }  // only favourite field return
     );
     return user ? user.favourite : [];
   }
 
-  static deleteToFavourite = (email, homeId) => {
+  static deleteToFavourite = (id, homeId) => {
     const db = getDb()
 
     return db.collection("users").updateOne(
-      { email },                     // filter by email
+      { _id: new ObjectId(id) },                     // filter by email
+      { $pull: { favourite: homeId } } // remove homeId from favourite array
+    );
+  }
+  
+  static deleteToFavouriteAllUser = (homeId) => {
+    const db = getDb()
+
+    return db.collection("users").updateMany(
+      { },                     // filter for find all
       { $pull: { favourite: homeId } } // remove homeId from favourite array
     );
   }
