@@ -3,6 +3,13 @@ const user = express.Router()
 const storeController = require('../controllers/store-controller')
 
 user.get('/',storeController.getIndex)
+user.use((req, res, next)=>{
+    if (req.session.isLoggedIn) {
+        next()
+    }else{
+        res.redirect('/login')
+    }
+})
 user.get('/homes',storeController.getHomes)
 user.get('/bookings',storeController.getBookings)
 user.get('/favourites',storeController.getFavouriteList)
