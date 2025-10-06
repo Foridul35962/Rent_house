@@ -1,5 +1,6 @@
 const express = require('express')
 const path = require('path')
+require('dotenv').config()
 //for login require
 const session = require('express-session')
 const mongoStore = require('connect-mongodb-session')(session)
@@ -52,7 +53,7 @@ app.use('/host',(req, res, next)=>{
 app.use("/host", host)
 app.use('/error',(errorController.pageNotFound))
 
-const PORT = 3000
+const PORT = process.env.PORT || 3000
 
 mongoConnect(()=>{
     console.log('mongodb is connected');
