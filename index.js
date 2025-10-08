@@ -4,7 +4,7 @@ require('dotenv').config()
 //for login require
 const session = require('express-session')
 const mongoStore = require('connect-mongodb-session')(session)
-const mongoUrl = "mongodb+srv://foridulislam35962_database:foridulislam35962_database@cluster35962.maduxse.mongodb.net/rent_house?retryWrites=true&w=majority&appName=Cluster35962";
+const mongoUrl= process.env.mongoUrl
 
 //local module
 const user = require('./routes/user')

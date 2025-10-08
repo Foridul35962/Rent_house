@@ -1,7 +1,7 @@
 const mongo = require('mongodb')
 
 const mongoClient = mongo.MongoClient
-const mongoUrl = "mongodb+srv://foridulislam35962_database:foridulislam35962_database@cluster35962.maduxse.mongodb.net/?retryWrites=true&w=majority&appName=Cluster35962"
+const mongoUrl = process.env.mongoUrl
 
 
 let _db
